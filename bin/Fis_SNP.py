@@ -5,6 +5,8 @@ import random
 from numpy import quantile
 from numpy import mean 
 from numpy import std 
+from numpy import nan
+from numpy import isnan
 
 def calc_FIS(position):
 	# position = vector of alleles found among n sequenced copies (haploid individuals) at a given position
@@ -24,7 +26,11 @@ def calc_FIS(position):
 	Ho /= (n/2.0)
 	
 	# Fis
-	Fis = (Hs-Ho)/Hs
+	if Hs != 0:
+		Fis = (Hs-Ho)/Hs
+	else:
+		Hs = nan
+		Ho = nan
 	return([Hs, Ho])
 
 ## get arguments
@@ -66,10 +72,11 @@ for locus in sequences:
 		for ind_tmp in range(n):
 			position.append(sequences[locus][ind_tmp][pos_tmp])
 		res = calc_FIS(position)
-		num += (res[0] - res[1])
-		denom += res[0]
-		Fis_SNP[cnt] = num/denom
-		cnt += 1
+		if isnan(res[0]) == False:
+			num += (res[0] - res[1])
+			denom += res[0]
+			Fis_SNP[cnt] = num/denom
+			cnt += 1
 
 # summary statistics = quentile of genomic distribution of SNPs
 quantiles = [0, 0.025, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.95, 0.975, 1]

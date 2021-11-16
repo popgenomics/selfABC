@@ -1,5 +1,5 @@
 nSam=100
-nLocus=1000
+nLocus=10
 nSNPs=1000
 
 region=noncoding
@@ -9,5 +9,5 @@ binpath=/home/croux/Programmes/selfABC/bin
 msnsam ${nSam} ${nLocus} -s ${nSNPs}  | python3 ${binpath}/ms2fasta.py > ${id}.fasta
 
 # 2. estiamtes quantiles of the genomic distribution for Fis
-python2 ${binpath}/Fis_SNP.py ${id}.fasta > ${id}.Fis
+python3 ${binpath}/Fis_SNP.py ${id}.fasta > ${id}.Fis
  
